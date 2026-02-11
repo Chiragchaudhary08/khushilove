@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khushi 💖 Premium Love Story</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Pacifico&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --pink:#ff4d6d;
+    --pink2:#ff6f91;
+    --ink:#2f2330;
+    --muted:#6a4a58;
+    --glass:rgba(255,255,255,.62);
+    --glass2:rgba(255,255,255,.38);
+    --line:rgba(0,0,0,.08);
+    --shadow: 0 22px 70px rgba(255,77,109,.18);
+    --bg1:#ffe4f2;
+    --bg2:#fff6fb;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 700px at 20% 15%, rgba(255,77,109,.18), transparent 55%),
+      radial-gradient(1200px 700px at 80% 75%, rgba(255,111,145,.16), transparent 55%),
+      linear-gradient(135deg, var(--bg1), var(--bg2));
+    color:var(--ink);
+    font-family:Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Canvases ---------- */
+  #sparkCanvas, #fxCanvas{
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  #fxCanvas{ z-index:50; }
+
+  /* ---------- Intro Screen ---------- */
+  .intro{
+    position:fixed; inset:0;
+    display:grid;
+    place-items:center;
+    z-index:100;
+    background:
+      radial-gradient(900px 500px at 30% 20%, rgba(255,77,109,.22), transparent 55%),
+      radial-gradient(900px 500px at 70% 70%, rgba(255,111,145,.20), transparent 55%),
+      linear-gradient(135deg, #0f0b12, #140d19);
+    color:#fff;
+    overflow:hidden;
+  }
+  .introCard{
+    width:min(900px, 92vw);
+    border-radius:34px;
+    padding:26px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 30px 120px rgba(0,0,0,.45);
+    position:relative;
+    overflow:hidden;
+  }
+  .introGlow{
+    position:absolute; inset:-120px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,77,109,.35), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(255,111,145,.30), transparent 55%);
+    filter: blur(30px);
+    opacity:.9;
+    pointer-events:none;
+  }
+  .introTop{
+    display:flex; gap:18px; align-items:center; justify-content:space-between;
+    flex-wrap:wrap;
+    position:relative;
+  }
+  .introTitle{
+    font-family:Pacifico, cursive;
+    font-size:44px;
+    line-height:1.1;
+    color:#ffd1dc;
+  }
+  .introSub{
+    margin-top:8px;
+    color:rgba(255,255,255,.82);
+    line-height:1.6;
+    font-size:14px;
+    max-width:680px;
+  }
+  .startBtn{
+    border:none;
+    cursor:pointer;
+    padding:14px 18px;
+    border-radius:999px;
+    font-weight:900;
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color:#fff;
+    box-shadow: 0 22px 60px rgba(255,77,109,.28);
+    transform: translateY(0);
+    transition: transform .15s ease;
+  }
+  .startBtn:hover{ transform: translateY(-1px); }
+  .startBtn:active{ transform: translateY(0); }
+
+  .introGrid{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:14px;
+    position:relative;
+  }
+  @media (max-width: 860px){ .introGrid{ grid-template-columns:1fr; } }
+
+  .introPanel{
+    border-radius:26px;
+    padding:16px;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13);
+  }
+  .introPanel h3{
+    font-family:Fredoka, sans-serif;
+    font-weight:900;
+    letter-spacing:.2px;
+    color:#fff;
+    font-size:16px;
+  }
+  .introPanel p{
+    margin-top:8px;
+    color:rgba(255,255,255,.78);
+    line-height:1.6;
+    font-size:13px;
+  }
+  .introBadges{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-top:10px;
+  }
+  .badge{
+    padding:8px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    color:rgba(255,255,255,.86);
+    font-weight:800;
+    font-size:12px;
+  }
+  .introFadeOut{
+    animation: introOut 1.1s ease forwards;
+  }
+  @keyframes introOut{
+    to{ opacity:0; transform: scale(1.02); visibility:hidden; }
+  }
+
+  /* ---------- Slideshow Background ---------- */
+  .slideshow{
+    position:fixed; inset:0;
+    z-index:-1;
+    overflow:hidden;
+  }
+  .slide{
+    position:absolute; inset:0;
+    opacity:0;
+    transition:opacity 1.6s ease;
+  }
+  .slide.active{ opacity:1; }
+  .slide img, .slide video{
+    width:100%; height:100%;
+    object-fit:cover;
+    filter: brightness(58%) saturate(1.02);
+    animation: zoomPan 18s linear infinite;
+  }
+  @keyframes zoomPan{
+    0%{ transform:scale(1) translate(0,0); }
+    100%{ transform:scale(1.18) translate(-1.5%, -1%); }
+  }
+  .shade{
+    position:fixed; inset:0;
+    z-index:-1;
+    background: linear-gradient(180deg, rgba(15,9,18,.25), rgba(255,255,255,.00) 35%, rgba(255,255,255,.00) 60%, rgba(15,9,18,.35));
+    pointer-events:none;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap{
+    position:relative;
+    z-index:2;
+    width:min(1150px, 94vw);
+    margin: 16px auto 50px;
+  }
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding: 10px 2px 12px;
+  }
+  .brand{
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .brand b{
+    font-family:Pacifico, cursive;
+    font-size:26px;
+    color:#fff;
+    text-shadow: 0 12px 30px rgba(0,0,0,.25);
+  }
+  .brand span{
+    font-size:13px;
+    color:rgba(255,255,255,.85);
+  }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .chip{
+    border:1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.14);
+    backdrop-filter: blur(10px);
+    border-radius:999px;
+    padding:10px 12px;
+    font-weight:900;
+    font-size:13px;
+    cursor:pointer;
+    color:#fff;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.18);}
+  .chip:active{transform: translateY(0);}
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1.06fr .94fr;
+    gap:18px;
+  }
+  @media (max-width: 960px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background: #8540409e;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    overflow:hidden;
+  }
+
+  /* ---------- Left Card ---------- */
+  .story{ padding:18px; }
+  .heroRow{ display:flex; gap:14px; align-items:flex-start; }
+  .avatar{
+    width:120px; height:120px;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.7);
+    box-shadow: 0 16px 45px rgba(0,0,0,.12);
+    flex:0 0 auto;
+    position:relative;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .avatar::after{
+    content:"";
+    position:absolute; inset:-30px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,77,109,.28), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(255,111,145,.25), transparent 55%);
+    pointer-events:none;
+  }
+  .headText{ flex:1; padding-top:4px; }
+  .title{
+    font-family:Pacifico, cursive;
+    font-size:40px;
+    color:#fff;
+    text-shadow: 0 18px 45px rgba(0,0,0,.28);
+    line-height:1.05;
+  }
+  .subtitle{
+    margin-top:10px;
+    color:rgba(255,255,255,.9);
+    line-height:1.55;
+    font-size:14px;
+    max-width:560px;
+  }
+
+  /* Countdown */
+  .countdownWrap{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .countBox{
+    background: rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.28);
+    color:#fff;
+    border-radius:18px;
+    padding:10px 12px;
+    min-width:92px;
+    text-align:center;
+    box-shadow: 0 12px 40px rgba(0,0,0,.10);
+  }
+  .countBox b{ display:block; font-size:20px; }
+  .countBox span{ font-size:12px; opacity:.92; font-weight:800; }
+
+  /* Dialogue */
+  .dialogueBox{
+    margin-top:16px;
+    background: rgba(255,255,255,.70);
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:22px;
+    padding:14px;
+    position:relative;
+    overflow:hidden;
+  }
+  .bubble{
+    display:inline-block;
+    background:#fff;
+    border:1px solid rgba(0,0,0,.06);
+    padding:12px 14px;
+    border-radius:18px;
+    font-family:Fredoka, sans-serif;
+    font-size:16px;
+    line-height:1.45;
+    color:var(--ink);
+    max-width: 100%;
+    box-shadow: 0 14px 35px rgba(0,0,0,.06);
+    position:relative;
+  }
+  .bubble::after{
+    content:"";
+    position:absolute;
+    left:18px;
+    bottom:-10px;
+    width:0;height:0;
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    border-top:12px solid #fff;
+    filter: drop-shadow(0 3px 0 rgba(0,0,0,.04));
+  }
+  .sceneMeta{
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    color:rgba(0,0,0,.55);
+    font-weight:900;
+    font-size:12px;
+  }
+  .sceneBtns{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    border:none;
+    cursor:pointer;
+    padding:12px 14px;
+    border-radius:16px;
+    font-weight:900;
+    font-size:14px;
+    transition: transform .12s ease, box-shadow .12s ease;
+    user-select:none;
+  }
+  .btn:hover{transform: translateY(-1px);}
+  .btn:active{transform: translateY(0);}
+
+  .btnPrimary{
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color:#fff;
+    box-shadow: 0 18px 45px rgba(255,77,109,.20);
+  }
+  .btnSoft{
+    background: rgba(255,255,255,.85);
+    border:1px solid rgba(0,0,0,.06);
+    color: var(--ink);
+  }
+  .btnOutline{
+    background: transparent;
+    border:1px solid rgba(255,77,109,.45);
+    color: var(--pink);
+  }
+
+  /* Proposal area */
+  .proposal{
+    margin-top:16px;
+    padding:16px;
+    border-top: 1px solid rgba(255,255,255,.35);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .proposalTitle{
+    font-family:Fredoka, sans-serif;
+    font-size:18px;
+    font-weight:900;
+    color:#fff;
+    text-shadow: 0 12px 30px rgba(0,0,0,.22);
+  }
+  .btnRow{
+    position:relative;
+    height:68px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+  }
+  .yesBtn, .noBtn{
+    border-radius:18px;
+    padding:14px 18px;
+    font-weight:900;
+    cursor:pointer;
+    transition: transform .12s ease;
+  }
+  .yesBtn{
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color:#fff;
+    border:none;
+    box-shadow: 0 18px 45px rgba(255,77,109,.22);
+  }
+  .noBtn{
+    position:absolute;
+    right:0;
+    background:#fff;
+    color: var(--pink);
+    border:1px solid rgba(255,77,109,.45);
+  }
+  .yesBtn:hover, .noBtn:hover{ transform: translateY(-1px); }
+
+  .yesBtn:disabled, .noBtn:disabled{
+    opacity:.55;
+    pointer-events:none;
+    transform:none;
+  }
+  .tip{
+    color:rgba(255,255,255,.92);
+    font-size:12px;
+    font-weight:900;
+    text-shadow: 0 12px 30px rgba(0,0,0,.22);
+  }
+
+  /* Unlock Glow */
+  @keyframes glowPulse{
+    0%{ box-shadow: 0 0 0 rgba(255,77,109,0); transform: translateY(0); }
+    50%{ box-shadow: 0 0 55px rgba(255,77,109,.55); transform: translateY(-1px); }
+    100%{ box-shadow: 0 0 0 rgba(255,77,109,0); transform: translateY(0); }
+  }
+  .unlockGlow{
+    animation: glowPulse 1.2s ease-in-out 3;
+  }
+
+  /* ---------- Right Card ---------- */
+  .side{ padding:18px; }
+  .panelTitle{
+    font-family:Fredoka, sans-serif;
+    font-weight:900;
+    font-size:16px;
+    color:#fff;
+    text-shadow: 0 12px 30px rgba(0,0,0,.22);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .panelTitle span{
+    color: rgba(255,255,255,.88);
+    font-weight:900;
+    font-size:12px;
+  }
+
+  .gameBox{
+    margin-top:12px;
+    border:1px solid rgba(255,255,255,.30);
+    background: rgba(255,255,255,.18);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow: 0 16px 45px rgba(0,0,0,.10);
+  }
+  .gameTop{
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    border-bottom:1px solid rgba(255,255,255,.25);
+    color:#fff;
+  }
+  .score{
+    font-weight:900;
+    font-size:14px;
+    text-shadow: 0 12px 30px rgba(0,0,0,.22);
+  }
+  .gameBtns{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .smallBtn{
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.18);
+    cursor:pointer;
+    font-weight:900;
+    font-size:12px;
+    color:#fff;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .smallBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.22); }
+  .smallBtn.primary{
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    border:none;
+  }
+
+  #gameCanvas{
+    width:100%;
+    height:330px;
+    display:block;
+    background:
+      radial-gradient(520px 260px at 30% 30%, rgba(255,77,109,.16), transparent 60%),
+      radial-gradient(520px 260px at 75% 60%, rgba(255,111,145,.16), transparent 60%),
+      rgba(255,255,255,.18);
+    touch-action: pan-y;
+  }
+
+  .hint{
+    padding:12px;
+    color: rgba(255,255,255,.92);
+    font-size:13px;
+    line-height:1.5;
+    text-shadow: 0 12px 30px rgba(0,0,0,.18);
+  }
+
+  /* Timeline */
+  .timeline{
+    margin-top:14px;
+    padding:14px;
+    border-top:1px solid rgba(255,255,255,.24);
+  }
+  .tlItem{
+    display:flex; gap:10px;
+    padding:10px 0;
+    border-bottom:1px dashed rgba(255,255,255,.22);
+    color:#fff;
+  }
+  .tlItem:last-child{ border-bottom:none; }
+  .dot{
+    width:10px; height:10px;
+    border-radius:99px;
+    background: linear-gradient(135deg,var(--pink),var(--pink2));
+    margin-top:6px;
+    box-shadow: 0 0 20px rgba(255,77,109,.55);
+    flex:0 0 auto;
+  }
+  .tlText b{ display:block; font-size:13px; }
+  .tlText span{ font-size:12px; opacity:.92; }
+
+  /* Gallery (images + videos) */
+  .gallery{
+    margin-top:14px;
+    border-top:1px solid rgba(255,255,255,.24);
+    padding-top:14px;
+  }
+  .mediaGrid{
+    margin-top:10px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:10px;
+  }
+  @media (max-width: 560px){ .mediaGrid{ grid-template-columns: repeat(2, 1fr); } }
+
+  .mediaCard{
+    height:130px;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.10);
+    box-shadow: 0 16px 45px rgba(0,0,0,.10);
+    cursor:pointer;
+    position:relative;
+    transform: translateY(10px);
+    opacity:0;
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .mediaCard.show{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .mediaCard img, .mediaCard video{
+    width:100%; height:100%;
+    object-fit:cover;
+    filter: saturate(1.02);
+  }
+  .tag{
+    position:absolute;
+    left:10px; bottom:10px;
+    padding:6px 8px;
+    border-radius:999px;
+    background: rgba(0,0,0,.35);
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    border:1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(8px);
+  }
+  .playIcon{
+    position:absolute;
+    right:10px; top:10px;
+    width:34px; height:34px;
+    border-radius:99px;
+    background: rgba(0,0,0,.35);
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(8px);
+    color:#fff;
+    font-weight:900;
+  }
+
+  /* ---------- Modals ---------- */
+  .modal{
+    position:fixed; inset:0;
+    display:none;
+    place-items:center;
+    padding:16px;
+    background: rgba(0,0,0,.60);
+    z-index:80;
+  }
+  .modalCard{
+    width:min(720px, 100%);
+    background: rgba(255,255,255,.86);
+    border:1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(14px);
+    border-radius:24px;
+    padding:16px;
+    box-shadow: 0 30px 90px rgba(0,0,0,.35);
+    position:relative;
+  }
+  .modalHead{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .modalHead h3{
+    font-family:Fredoka, sans-serif;
+    font-weight:900;
+    color:var(--ink);
+    font-size:16px;
+  }
+  .closeBtn{
+    border:none;
+    cursor:pointer;
+    padding:10px 12px;
+    border-radius:14px;
+    background: rgba(255,255,255,.95);
+    border:1px solid rgba(0,0,0,.08);
+    font-weight:900;
+  }
+  .modalBody{
+    margin-top:10px;
+    background: rgba(255,255,255,.92);
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:18px;
+    padding:14px;
+    line-height:1.65;
+    color: rgba(0,0,0,.82);
+    font-size:14px;
+  }
+
+  /* Lightbox */
+  .lightboxMedia{
+    margin-top:10px;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(0,0,0,.08);
+    background:#000;
+  }
+  .lightboxMedia img, .lightboxMedia video{
+    width:100%;
+    max-height:70vh;
+    object-fit:contain;
+    display:block;
+    background:#000;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Background slideshow (full screen) -->
+<div class="slideshow" id="slideshow"></div>
+<div class="shade"></div>
+
+<!-- Canvases -->
+<canvas id="sparkCanvas"></canvas>
+<canvas id="fxCanvas"></canvas>
+
+<!-- Intro -->
+<div class="intro" id="intro">
+  <div class="introCard">
+    <div class="introGlow"></div>
+    <div class="introTop">
+      <div>
+        <div class="introTitle">Khushi 💖</div>
+        <div class="introSub">
+          love story .  
+          <b>Click Start</b> to begin with music, slideshow & spark particles ✨
+        </div>
+      </div>
+      <button class="startBtn" id="startBtn">▶ Start Experience</button>
+    </div>
+
+    <div class="introGrid">
+      <div class="introPanel">
+        <h3>What’s inside?</h3>
+        <p>
+          Mera pyar Khushi (images & videos), cute dialogues, Valentine countdown,
+          love mini-game (12 hearts), glow unlock, runaway “No”, fireworks & a love letter.
+        </p>
+        <div class="introBadges">
+          <div class="badge">✨ Spark Particles</div>
+          <div class="badge">🎬 Cinematic Slideshow</div>
+          <div class="badge">💌 Love Letter</div>
+          <div class="badge">🎆 Fireworks</div>
+          <div class="badge">🎮 Mini Game</div>
+        </div>
+      </div>
+      <div class="introPanel">
+        <h3>How to add your photos/videos?</h3>
+        <p>
+          Create a folder <b>media</b> and put files like: <b>photo1.jpg</b>, <b>video1.mp4</b> etc.  
+          Then update the <b>MEDIA</b> list in JS (already examples added).
+        </p>
+        <div class="introBadges">
+          <div class="badge">📁 /media/photo1.jpg</div>
+          <div class="badge">📁 /media/video1.mp4</div>
+          <div class="badge">✅ Unlimited</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <b>Khushi 💖</b>
+      <span>cinematic love story + game + memories</span>
+    </div>
+    <div class="controls">
+      <button class="chip" id="musicBtn">🔈 Music</button>
+      <button class="chip" id="openLetterTop">💌 Letter</button>
+      <button class="chip" id="scrollToGame">🎮 Game</button>
+      <button class="chip" id="scrollToMem">📸 Memories</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="card story">
+      <div class="heroRow">
+        <div class="avatar">
+          <img src="media/cartoon.png" alt="Cute Cartoon" />
+        </div>
+        <div class="headText">
+          <div class="title">Hi Khushi…</div>
+          <div class="subtitle">
+            Aaj ek chhoti si story, ek mini game, aur ek cute sa surprise…  
+            <b>12 hearts catch</b> karoge toh proposal unlock hoga 😌💖
+          </div>
+
+          <!-- Countdown -->
+          <div class="countdownWrap" id="countdown">
+            <div class="countBox"><b id="cdD">--</b><span>Days</span></div>
+            <div class="countBox"><b id="cdH">--</b><span>Hours</span></div>
+            <div class="countBox"><b id="cdM">--</b><span>Minutes</span></div>
+            <div class="countBox"><b id="cdS">--</b><span>Seconds</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialogue -->
+      <div class="dialogueBox">
+        <div class="bubble" id="bubble"></div>
+        <div class="sceneMeta">
+          <span id="sceneLabel">Scene 1/5</span>
+          <span id="sceneHint">Tap “Next”</span>
+        </div>
+        <div class="sceneBtns">
+          <button class="btn btnPrimary" id="nextScene">Next ▶</button>
+          <button class="btn btnSoft" id="replayScene">Replay ⟲</button>
+          <button class="btn btnOutline" id="openLetter">Open Letter 💌</button>
+        </div>
+      </div>
+
+      <!-- Proposal -->
+      <div class="proposal" id="proposalCard">
+        <div class="proposalTitle">Final Question (unlock after game) 💍</div>
+        <div class="btnRow" id="proposalRow">
+          <button class="yesBtn" id="yesBtn" disabled title="Game complete first 🙂">Yes 💖</button>
+          <button class="noBtn" id="noBtn" disabled title="Game complete first 🙂">No 🙈</button>
+        </div>
+        <div class="tip" id="unlockTip">🔒 Pehle right side game me 12 hearts catch karo.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card side" id="gameSection">
+      <div class="panelTitle">
+        <div>Love Catch Game 💖</div>
+        <span>Target: 12</span>
+      </div>
+
+      <div class="gameBox">
+        <div class="gameTop">
+          <div class="score">Score: <span id="score">0</span> / 12</div>
+          <div class="gameBtns">
+            <button class="smallBtn primary" id="startGame">Start</button>
+            <button class="smallBtn" id="pauseGame">Pause</button>
+            <button class="smallBtn" id="resetGame">Reset</button>
+          </div>
+        </div>
+
+        <canvas id="gameCanvas" width="900" height="480"></canvas>
+        <div class="hint">
+          Desktop: mouse move ✅ | Mobile: finger swipe ✅  
+          <br>12 hearts catch → proposal unlock!
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline">
+        <div class="panelTitle" style="margin-bottom:10px;">
+          <div>Our Timeline 💞</div>
+          <span>cute moments</span>
+        </div>
+        <div class="tlItem">
+          <div class="dot"></div>
+          <div class="tlText"><b>The First Smile</b><span>jab tum hasi… sab bright lagne laga ✨</span></div>
+        </div>
+        <div class="tlItem">
+          <div class="dot"></div>
+          <div class="tlText"><b>Late Night Talks</b><span>Chahe jitni bhi baat ho 😄</span></div>
+        </div>
+        <div class="tlItem">
+          <div class="dot"></div>
+          <div class="tlText"><b>My Favorite Person</b><span>tumhari presence = calm + cute 💗</span></div>
+        </div>
+      </div>
+
+      <!-- Memories -->
+      <div class="gallery" id="memories">
+        <div class="panelTitle">
+          <div>Memories 📸</div>
+          <span>images + videos</span>
+        </div>
+        <div class="mediaGrid" id="mediaGrid"></div>
+        <div class="hint" style="padding-top:10px;">
+          Tip: Media list me jitni files add karoge utni cards ban jayengi ✅
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Love Letter Modal -->
+<div class="modal" id="letterModal">
+  <div class="modalCard">
+    <div class="modalHead">
+      <h3>💌 Love Letter</h3>
+      <button class="closeBtn" id="closeLetter">✕</button>
+    </div>
+    <div class="modalBody" id="letterText"></div>
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div class="modal" id="lightbox">
+  <div class="modalCard">
+    <div class="modalHead">
+      <h3 id="lightboxTitle">📸 Memory</h3>
+      <button class="closeBtn" id="closeLightbox">✕</button>
+    </div>
+    <div class="lightboxMedia" id="lightboxMedia"></div>
+    <div class="modalBody" id="lightboxCaption" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="media/music.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* =========================================================
+   ✅ 1) CUSTOMIZE HERE (Add unlimited images/videos)
+   ========================================================= */
+const MEDIA = [
+  { type:"image", src:"media/photo1.jpg", title:"Memory 1", caption:"Tumhari smile = meri favorite notification 💖" },
+  { type:"image", src:"media/photo2.jpg", title:"Memory 2", caption:"Jab tum saath ho… sab easy lagta hai 🌸" },
+  { type:"image", src:"media/photo3.jpg", title:"Memory 3", caption:"Cute moment, forever saved ✨" },
+  { type:"video", src:"media/video1.mp4", title:"Video Memory", caption:"This video = my happy place 🎥💗" },
+  // Add more like:
+  // { type:"image", src:"media/photo4.jpg", title:"Memory 4", caption:"..." },
+  // { type:"video", src:"media/video2.mp4", title:"Video 2", caption:"..." },
+];
+
+const SLIDESHOW_MEDIA = [
+  // Full-screen background slides (images/videos)
+  { type:"image", src:"media/photo1.jpg" },
+  { type:"image", src:"media/photo2.jpg" },
+  { type:"video", src:"media/video1.mp4" },
+];
+
+const DIALOGUES = [
+  "Khushi… ek secret hai 🙈<br>Jab tum online hoti ho na… mere face pe smile aa jaati hai 💕",
+  "Main zyada filmy nahi… par tumhe dekh ke filmy ban jaata hoon 😄✨",
+  "Tumhare saath har cheez soft & beautiful lagti hai 🌷",
+  "Chalo game khelo! 12 hearts catch karo… phir main tumse ek question puchunga 💖",
+  "Ready? Game complete hote hi proposal unlock ho jayega 😌"
+];
+
+const LETTER_HTML =
+`Khushi ❤️<br><br>
+Tumhari aankhon me sukoon hai… aur tumhari baaton me “Ghar” jaisa feel.  
+Main tumhe har din choose karna chahta hoon—without any reason. 🌷<br><br>
+Bas ek “Yes” aur… main tumhare saath hamesha. 💍`;
+
+/* =========================================================
+   ✅ 2) INTRO START (must click to allow autoplay audio)
+   ========================================================= */
+const intro = document.getElementById("intro");
+const startBtn = document.getElementById("startBtn");
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+let musicOn = false;
+
+startBtn.addEventListener("click", async ()=>{
+  intro.classList.add("introFadeOut");
+  setTimeout(()=> intro.style.display="none", 1100);
+
+  // Start music (user gesture)
+  musicOn = true;
+  try { await music.play(); } catch(e){}
+  updateMusicBtn();
+
+  // Start slideshow cycle
+  startSlideshow();
+});
+
+function updateMusicBtn(){
+  musicBtn.textContent = musicOn ? "🔊 Music" : "🔈 Muted";
+}
+musicBtn.addEventListener("click", async ()=>{
+  musicOn = !musicOn;
+  if(musicOn){
+    try { await music.play(); } catch(e){}
+  }else{
+    music.pause();
+  }
+  updateMusicBtn();
+});
+
+/* =========================================================
+   ✅ 3) SLIDESHOW Background (Fade + Zoom)
+   ========================================================= */
+const slideshow = document.getElementById("slideshow");
+let slideIndex = 0;
+let slideTimer = null;
+
+function buildSlideshow(){
+  slideshow.innerHTML = "";
+  SLIDESHOW_MEDIA.forEach((m, i)=>{
+    const s = document.createElement("div");
+    s.className = "slide" + (i===0 ? " active" : "");
+    if(m.type==="video"){
+      const v = document.createElement("video");
+      v.src = m.src;
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      // don't autoplay until start
+      s.appendChild(v);
+    } else {
+      const img = document.createElement("img");
+      img.src = m.src;
+      s.appendChild(img);
+    }
+    slideshow.appendChild(s);
+  });
+}
+
+function startSlideshow(){
+  if(!slideshow.children.length) buildSlideshow();
+
+  // play current slide video if any
+  playActiveVideo();
+
+  if(slideTimer) clearInterval(slideTimer);
+  slideTimer = setInterval(()=>{
+    const slides = document.querySelectorAll(".slide");
+    slides[slideIndex].classList.remove("active");
+    pauseVideo(slides[slideIndex]);
+
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add("active");
+    playActiveVideo();
+  }, 6500);
+}
+
+function playActiveVideo(){
+  const slides = document.querySelectorAll(".slide");
+  const active = slides[slideIndex];
+  const v = active.querySelector("video");
+  if(v){
+    v.currentTime = 0;
+    v.play().catch(()=>{});
+  }
+}
+function pauseVideo(slideEl){
+  const v = slideEl.querySelector("video");
+  if(v) v.pause();
+}
+
+buildSlideshow();
+
+/* =========================================================
+   ✅ 4) COUNTDOWN to Valentine (14 Feb)
+   ========================================================= */
+const cdD = document.getElementById("cdD");
+const cdH = document.getElementById("cdH");
+const cdM = document.getElementById("cdM");
+const cdS = document.getElementById("cdS");
+
+function getNextValentine(){
+  const now = new Date();
+  let year = now.getFullYear();
+  let v = new Date(year, 1, 14, 0, 0, 0); // Feb=1
+  if(now > v) v = new Date(year+1, 1, 14, 0, 0, 0);
+  return v;
+}
+let valentine = getNextValentine();
+
+function tickCountdown(){
+  const now = new Date();
+  let diff = valentine - now;
+  if(diff < 0){
+    valentine = getNextValentine();
+    diff = valentine - now;
+  }
+  const sec = Math.floor(diff/1000);
+  const d = Math.floor(sec/86400);
+  const h = Math.floor((sec%86400)/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+
+  cdD.textContent = String(d).padStart(2,"0");
+  cdH.textContent = String(h).padStart(2,"0");
+  cdM.textContent = String(m).padStart(2,"0");
+  cdS.textContent = String(s).padStart(2,"0");
+}
+setInterval(tickCountdown, 1000);
+tickCountdown();
+
+/* =========================================================
+   ✅ 5) DIALOGUE typing
+   ========================================================= */
+const bubble = document.getElementById("bubble");
+const sceneLabel = document.getElementById("sceneLabel");
+const sceneHint = document.getElementById("sceneHint");
+const nextSceneBtn = document.getElementById("nextScene");
+const replaySceneBtn = document.getElementById("replayScene");
+
+let scene = 0;
+let typingTimer = null;
+
+function typeHTML(html, speed=20){
+  clearTimeout(typingTimer);
+  bubble.innerHTML = "";
+  const text = html.replace(/<br\s*\/?>/gi, "\n");
+  let i = 0;
+  function step(){
+    const ch = text[i++];
+    if(ch === "\n") bubble.innerHTML += "<br>";
+    else bubble.innerHTML += ch ?? "";
+    if(i <= text.length) typingTimer = setTimeout(step, speed);
+  }
+  step();
+}
+
+function renderScene(){
+  sceneLabel.textContent = `Scene ${scene+1}/${DIALOGUES.length}`;
+  sceneHint.textContent = (scene < DIALOGUES.length-1) ? "Tap “Next”" : "Now play game → unlock";
+  typeHTML(DIALOGUES[scene], 18);
+}
+renderScene();
+
+nextSceneBtn.addEventListener("click", ()=>{
+  scene = Math.min(DIALOGUES.length-1, scene+1);
+  renderScene();
+});
+replaySceneBtn.addEventListener("click", renderScene);
+
+/* =========================================================
+   ✅ 6) LETTER modal
+   ========================================================= */
+const letterModal = document.getElementById("letterModal");
+const openLetter = document.getElementById("openLetter");
+const openLetterTop = document.getElementById("openLetterTop");
+const closeLetter = document.getElementById("closeLetter");
+const letterText = document.getElementById("letterText");
+letterText.innerHTML = LETTER_HTML;
+
+function openLetterModal(){ letterModal.style.display="grid"; }
+function closeLetterModal(){ letterModal.style.display="none"; }
+
+openLetter.addEventListener("click", openLetterModal);
+openLetterTop.addEventListener("click", openLetterModal);
+closeLetter.addEventListener("click", closeLetterModal);
+letterModal.addEventListener("click",(e)=>{ if(e.target === letterModal) closeLetterModal(); });
+
+/* =========================================================
+   ✅ 7) Scroll buttons
+   ========================================================= */
+document.getElementById("scrollToMem").addEventListener("click", ()=>{
+  document.getElementById("memories").scrollIntoView({behavior:"smooth", block:"start"});
+});
+document.getElementById("scrollToGame").addEventListener("click", ()=>{
+  document.getElementById("gameSection").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   ✅ 8) Build MEDIA Grid (unlimited)
+   ========================================================= */
+const mediaGrid = document.getElementById("mediaGrid");
+
+function buildMediaGrid(){
+  mediaGrid.innerHTML = "";
+  MEDIA.forEach((m, idx)=>{
+    const card = document.createElement("div");
+    card.className = "mediaCard";
+    card.dataset.index = idx;
+
+    if(m.type==="video"){
+      card.innerHTML = `
+        <video muted playsinline preload="metadata">
+          <source src="${m.src}" type="video/mp4">
+        </video>
+        <div class="playIcon">▶</div>
+        <div class="tag">${m.title}</div>
+      `;
+    }else{
+      card.innerHTML = `
+        <img src="${m.src}" alt="${m.title}">
+        <div class="tag">${m.title}</div>
+      `;
+    }
+
+    mediaGrid.appendChild(card);
+  });
+
+  revealMedia();
+}
+buildMediaGrid();
+
+function revealMedia(){
+  const cards = document.querySelectorAll(".mediaCard");
+  cards.forEach((c, i)=>{
+    setTimeout(()=> c.classList.add("show"), 90*i);
+  });
+}
+
+/* =========================================================
+   ✅ 9) Lightbox
+   ========================================================= */
+const lightbox = document.getElementById("lightbox");
+const closeLightbox = document.getElementById("closeLightbox");
+const lightboxMedia = document.getElementById("lightboxMedia");
+const lightboxTitle = document.getElementById("lightboxTitle");
+const lightboxCaption = document.getElementById("lightboxCaption");
+
+mediaGrid.addEventListener("click", (e)=>{
+  const card = e.target.closest(".mediaCard");
+  if(!card) return;
+  const idx = Number(card.dataset.index);
+  const m = MEDIA[idx];
+
+  lightboxTitle.textContent = m.title || "Memory";
+  lightboxCaption.textContent = m.caption || "";
+
+  lightboxMedia.innerHTML = "";
+  if(m.type==="video"){
+    lightboxMedia.innerHTML = `
+      <video controls autoplay playsinline>
+        <source src="${m.src}" type="video/mp4">
+      </video>
+    `;
+  }else{
+    lightboxMedia.innerHTML = `<img src="${m.src}" alt="${m.title}">`;
+  }
+
+  lightbox.style.display="grid";
+});
+
+closeLightbox.addEventListener("click", ()=> lightbox.style.display="none");
+lightbox.addEventListener("click",(e)=>{ if(e.target === lightbox) lightbox.style.display="none"; });
+
+/* =========================================================
+   ✅ 10) Spark Particles Background
+   ========================================================= */
+const sparkCanvas = document.getElementById("sparkCanvas");
+const sctx = sparkCanvas.getContext("2d");
+
+function resizeCanvas(c, ctx){
+  c.width = innerWidth * devicePixelRatio;
+  c.height = innerHeight * devicePixelRatio;
+  c.style.width = innerWidth + "px";
+  c.style.height = innerHeight + "px";
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+resizeCanvas(sparkCanvas, sctx);
+addEventListener("resize", ()=> resizeCanvas(sparkCanvas, sctx));
+
+const sparks = Array.from({length: 120}, ()=>({
+  x: Math.random()*innerWidth,
+  y: Math.random()*innerHeight,
+  r: 1+Math.random()*2.2,
+  vx: -0.3+Math.random()*0.6,
+  vy: 0.2+Math.random()*0.7,
+  a: 0.10+Math.random()*0.18
+}));
+
+function drawSparks(){
+  sctx.clearRect(0,0,innerWidth,innerHeight);
+  sparks.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if(p.y > innerHeight+10) p.y = -10;
+    if(p.x < -10) p.x = innerWidth+10;
+    if(p.x > innerWidth+10) p.x = -10;
+
+    sctx.fillStyle = `rgba(255,111,145,${p.a})`;
+    sctx.beginPath();
+    sctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    sctx.fill();
+  });
+  requestAnimationFrame(drawSparks);
+}
+drawSparks();
+
+/* =========================================================
+   ✅ 11) FX Fireworks (Yes click)
+   ========================================================= */
+const fxCanvas = document.getElementById("fxCanvas");
+const fx = fxCanvas.getContext("2d");
+resizeCanvas(fxCanvas, fx);
+addEventListener("resize", ()=> resizeCanvas(fxCanvas, fx));
+
+let fxParts = [];
+function fxBurst(x,y,count=110){
+  for(let i=0;i<count;i++){
+    const ang = Math.random()*Math.PI*2;
+    const sp = 1.6 + Math.random()*6.6;
+    fxParts.push({
+      x, y,
+      vx: Math.cos(ang)*sp,
+      vy: Math.sin(ang)*sp,
+      life: 85 + Math.random()*45,
+      hue: Math.random()*360,
+      r: 1.6 + Math.random()*2.6
+    });
+  }
+}
+
+function drawFX(){
+  fx.clearRect(0,0,innerWidth,innerHeight);
+  fxParts = fxParts.filter(p=> p.life > 0);
+  fxParts.forEach(p=>{
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.05;
+    p.life -= 1.25;
+    fx.fillStyle = `hsla(${p.hue},100%,60%,${Math.max(0,p.life/120)})`;
+    fx.beginPath();
+    fx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    fx.fill();
+  });
+  requestAnimationFrame(drawFX);
+}
+drawFX();
+
+/* =========================================================
+   ✅ 12) LOVE CATCH GAME (STRICT LOCK)
+   ========================================================= */
+const gameCanvas = document.getElementById("gameCanvas");
+const g = gameCanvas.getContext("2d");
+
+const scoreEl = document.getElementById("score");
+const startGameBtn = document.getElementById("startGame");
+const pauseGameBtn = document.getElementById("pauseGame");
+const resetGameBtn = document.getElementById("resetGame");
+
+const TARGET = 12;
+let score = 0;
+let running = false;
+let raf = null;
+
+let basket = { x: 450, y: 420, w: 140, h: 28 };
+let hearts = [];
+let spawnTick = 0;
+
+function spawnHeart(){
+  hearts.push({
+    x: 30 + Math.random()*(gameCanvas.width-60),
+    y: -30,
+    r: 10 + Math.random()*7,
+    vy: 2.2 + Math.random()*2.4,
+    vx: -0.7 + Math.random()*1.4
+  });
+}
+
+function drawHeart(x,y,size){
+  g.save();
+  g.translate(x,y);
+  g.beginPath();
+  g.moveTo(0, size/4);
+  g.bezierCurveTo(0, 0, -size/2, 0, -size/2, size/4);
+  g.bezierCurveTo(-size/2, size/2, 0, size*0.82, 0, size);
+  g.bezierCurveTo(0, size*0.82, size/2, size/2, size/2, size/4);
+  g.bezierCurveTo(size/2, 0, 0, 0, 0, size/4);
+  g.closePath();
+  g.fillStyle = "rgba(255,77,109,.95)";
+  g.fill();
+  g.restore();
+}
+
+function drawBasket(){
+  g.fillStyle = "rgba(255,255,255,.92)";
+  g.strokeStyle = "rgba(0,0,0,.08)";
+  g.lineWidth = 2;
+  g.beginPath();
+  g.roundRect(basket.x - basket.w/2, basket.y, basket.w, basket.h, 14);
+  g.fill(); g.stroke();
+
+  g.strokeStyle = "rgba(255,77,109,.55)";
+  g.beginPath();
+  g.moveTo(basket.x - basket.w/2 + 12, basket.y + basket.h/2);
+  g.lineTo(basket.x + basket.w/2 - 12, basket.y + basket.h/2);
+  g.stroke();
+}
+
+function stepGame(){
+  g.clearRect(0,0,gameCanvas.width, gameCanvas.height);
+
+  // background layer
+  g.fillStyle = "rgba(255,255,255,.12)";
+  g.fillRect(0,0,gameCanvas.width, gameCanvas.height);
+
+  // spawn hearts
+  spawnTick++;
+  if(spawnTick % 18 === 0) spawnHeart();
+
+  // update hearts
+  hearts.forEach(h=>{
+    h.x += h.vx;
+    h.y += h.vy;
+    if(h.x < 10) h.x = 10;
+    if(h.x > gameCanvas.width-10) h.x = gameCanvas.width-10;
+    drawHeart(h.x, h.y, h.r*2);
+  });
+
+  // basket
+  drawBasket();
+
+  // collision
+  hearts = hearts.filter(h=>{
+    const hit =
+      h.y + h.r*2 >= basket.y &&
+      h.y <= basket.y + basket.h &&
+      h.x >= basket.x - basket.w/2 &&
+      h.x <= basket.x + basket.w/2;
+
+    if(hit){
+      score++;
+      if(score > TARGET) score = TARGET;  // ✅ strict cap
+      scoreEl.textContent = score;
+
+      // little FX
+      const px = (h.x / gameCanvas.width) * innerWidth;
+      const py = (h.y / gameCanvas.height) * innerHeight;
+      fxBurst(px, py, 28);
+
+      if(score === TARGET){
+        unlockProposal(); // ✅ only when exactly target reached
+      }
+      return false;
+    }
+    return h.y < gameCanvas.height + 60;
+  });
+
+  if(running) raf = requestAnimationFrame(stepGame);
+}
+
+function startGame(){
+  if(running) return;
+  running = true;
+  raf = requestAnimationFrame(stepGame);
+}
+function pauseGame(){
+  running = false;
+  if(raf) cancelAnimationFrame(raf);
+}
+function resetGame(){
+  pauseGame();
+  score = 0;
+  scoreEl.textContent = score;
+  hearts = [];
+  spawnTick = 0;
+}
+startGameBtn.addEventListener("click", startGame);
+pauseGameBtn.addEventListener("click", pauseGame);
+resetGameBtn.addEventListener("click", resetGame);
+
+// basket controls (mouse)
+gameCanvas.addEventListener("mousemove", (e)=>{
+  const rect = gameCanvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (gameCanvas.width / rect.width);
+  basket.x = Math.max(basket.w/2, Math.min(gameCanvas.width - basket.w/2, x));
+});
+
+// basket controls (touch)
+gameCanvas.addEventListener("touchmove", (e)=>{
+  const t = e.touches[0];
+  const rect = gameCanvas.getBoundingClientRect();
+  const x = (t.clientX - rect.left) * (gameCanvas.width / rect.width);
+  basket.x = Math.max(basket.w/2, Math.min(gameCanvas.width - basket.w/2, x));
+}, {passive:true});
+
+/* =========================================================
+   ✅ 13) Unlock Proposal (STRICT)
+   ========================================================= */
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const proposalRow = document.getElementById("proposalRow");
+const unlockTip = document.getElementById("unlockTip");
+const proposalCard = document.getElementById("proposalCard");
+let unlocked = false;
+
+function unlockProposal(){
+  if(unlocked) return;
+  unlocked = true;
+
+  yesBtn.disabled = false;
+  noBtn.disabled = false;
+
+  unlockTip.textContent = "✅ Unlock ho gaya! Ab answer do 😄";
+  proposalCard.classList.add("unlockGlow");
+  yesBtn.classList.add("unlockGlow");
+  noBtn.classList.add("unlockGlow");
+
+  fxBurst(innerWidth*0.5, innerHeight*0.35, 180);
+}
+
+// runaway No (only after unlock)
+function moveNo(){
+  const b = proposalRow.getBoundingClientRect();
+  const x = Math.random() * (b.width - 140);
+  const y = Math.random() * 8;
+  noBtn.style.right = "auto";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+noBtn.addEventListener("mouseenter", ()=>{ if(unlocked) moveNo(); });
+noBtn.addEventListener("touchstart", (e)=>{ if(unlocked){ e.preventDefault(); moveNo(); } }, {passive:false});
+
+/* =========================================================
+   ✅ 14) YES click (fireworks + open letter)
+   ========================================================= */
+yesBtn.addEventListener("click", ()=>{
+  if(!unlocked) return;
+
+  fxBurst(innerWidth*0.5, innerHeight*0.34, 260);
+  fxBurst(innerWidth*0.33, innerHeight*0.42, 140);
+  fxBurst(innerWidth*0.67, innerHeight*0.42, 140);
+
+  // hide No
+  noBtn.style.opacity = "0";
+  noBtn.style.pointerEvents = "none";
+
+  // final scene
+  scene = DIALOGUES.length - 1;
+  typeHTML("Yayyy! 💖<br>Ab officially… main tumhara/tumhari! 😄💍", 16);
+  sceneLabel.textContent = `Scene ${DIALOGUES.length}/${DIALOGUES.length}`;
+  sceneHint.textContent = "Letter opened 🙂";
+
+  setTimeout(openLetterModal, 650);
+});
+</script>
+
+</body>
+</html>
